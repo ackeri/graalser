@@ -16,13 +16,14 @@ class Polyglot {
  
 
         //primitives
-        if(v.isBoolean isNativePointer isNull isNumber isString isHostObject
-                asBoolean asNativePointer asString asHostObject asFloat asLong...
+        //if(v.isBoolean isNativePointer isNull isNumber isString isHostObject
+        //        asBoolean asNativePointer asString asHostObject asFloat asLong...
+				
         //array
         if(v.hasArrayElements()) {
           for(int i = 0; i < v.getArraySize(); i++) {
             Value element = v.getArrayElement(i);
-            write(element);
+            System.out.println("array element " + i + ": " + element);
           }
         }
 
@@ -30,7 +31,7 @@ class Polyglot {
         if(v.hasMembers()) {
           for(String k : v.getMemberKeys()) {
             Value member = v.getMember(k);
-            write(member);
+            System.out.println("member " + k + ": " + member);
           }
         }
         
