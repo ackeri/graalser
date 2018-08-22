@@ -1,14 +1,13 @@
 
 
-var testjs = {
-  construct: function construct() {
-      return {};
-  },
-  testfunc: function testfunc() {
-      return 2;
-  },
-  stringfield: "hello",
-  intfield: 3,
+var testjs = function() { 
+  this.stringfield = "hello";
+  this.intfield = 3;
+  secret = 5;
 }
 
-testjs
+testjs.prototype.construct = function() {
+    return new testjs
+}
+
+new testjs();

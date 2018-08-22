@@ -6,16 +6,28 @@ import java.util.*;
 class Polyglot {
 
 	public static void main(String[] args) throws Exception {
-        Context polyglot = Context.create();
+
+      String[] supportedLangs = { "js", "python"};
+
+        Context polyglot = Context.newBuilder(supportedLangs)
+            .allowAllAccess(true)
+            .build();
         Value v1 = polyglot.eval(Source.newBuilder("js", new File("./arraydef.js")).build());
         Value v2 = polyglot.eval(Source.newBuilder("js", new File("./classdef.js")).build());
 				Value v3 = polyglot.asValue(new TestClass().mutate());
+        Value v4 = polyglot.eval(Source.newBuilder("js", new File("./complexclassdef.js")).build());
+        //Value v5 = polyglot.eval(Source.newBuilder("python", new File("./class.py")).build());
+        //v5.getMember("mutate").execute();
 
 				TypesDB.register(v1);
 				TypesDB.register(v2);
 				TypesDB.register(v3);
-				
-				Value v = v1;
+        TypesDB.register(v4);
+        TypesDB.register(v4.getMember("child1"));
+        TypesDB.register(v4.getMember("child1").getMember("grandchild"));
+        //TypesDB.register(v5);
+        
+				Value v = v4;
 
 				System.out.println("--Writing--");
 				Writer w = new Writer(new FileOutputStream("file.bin"));
