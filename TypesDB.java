@@ -8,42 +8,38 @@ public class TypesDB {
 	}
 	public static final Types[] fromInt = Types.values();
 
-	private static List<Type> types = new ArrayList<Type>();
+	private static List<Type> typesById = new ArrayList<Type>();
+  private static Map<String, Short> typesByName = new HashMap<String, Short>();
 	
-	public static void register(String lang, String src, Value v) {
-		types.add(new Type(lang, src, v));
+	public static void register(Value prototype) {
+		Type t = new Type(prototype);
+    typesByName.put(prototype.getMetaObject().toString(), (short)(typesById.size() + fromInt.length));
+    typesById.add(t);
 	}
 
 	public static short getTypeID(Value v) {
-		//TODO woefully unimplemented
-		if(v.hasArrayElements()) {
-			return (short)(Types.DYNAMIC_START.ordinal() + 1);
-		} else {
-			return (short)(Types.DYNAMIC_START.ordinal() + 3);
-		}
+    return typesByName.get(v.getMetaObject().toString());
 	}
 
 	public static Value newInstance(short id, Context c) {
-		return types.get(id - fromInt.length).newInstance(c);
+		if(id < fromInt.length) 
+        throw new IllegalArgumentException("cannot instantiate primitive. got code: " + id);
+		return typesById.get(id - fromInt.length).newInstance(c);
 	}
 
 	public static List<String> getMembers(short id) {
 		if(id < fromInt.length)
 			return new ArrayList<String>();
 
-		return types.get(id - fromInt.length).members;
+		return typesById.get(id - fromInt.length).members;
 	}
 
 
 	public static class Type {
-		private String lang;
-		private String src;
 		public List<String> members;
 		private Value prototype;
 
-		public Type(String lang, String src, Value prototype) {
-			this.lang = lang;
-			this.src = src;
+		public Type(Value prototype) {
 			this.prototype = prototype;
 			this.members = new ArrayList<String>();
 
@@ -56,11 +52,7 @@ public class TypesDB {
 		}
 
 		public Value newInstance(Context c) {
-			if(lang.equals("java")) {
-				return prototype.getMetaObject().newInstance();
-			} else {
-				return c.eval(lang, src);
-			}
+      return prototype.getMember("construct").execute();
 		}
 	}
 
