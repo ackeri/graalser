@@ -28,25 +28,25 @@ public class Reader {
 		if(typeindex < TypesDB.fromInt.length) {
 			switch(TypesDB.fromInt[typeindex]) {
 				case BOOLEAN:
-					System.out.println("found boolean");
+					//System.out.println("found boolean");
 					out = c.asValue(in.readBoolean());
 					break;
 				case NATIVE_POINTER:
 					throw new IllegalArgumentException("don't handle native pointers yet");
 				case NULL:
-					System.out.println("found null");
+					//System.out.println("found null");
 					out = c.asValue(null);
 					break;
 				case NUMBER:
-					System.out.println("found number");
+					//System.out.println("found number");
 					out = c.asValue(in.readInt());
 					break;
 				case STRING:
-					System.out.println("found string");
+					//System.out.println("found string");
 					out = c.asValue(in.readUTF());
 					break;
 				case SEEN:
-					System.out.println("found cached value");
+					//System.out.println("found cached value");
 					return seenCache.get(seenindex);
 				default: 
 					throw new IllegalArgumentException("we should never get here");
@@ -59,7 +59,7 @@ public class Reader {
 		//check array data
 		long arraylength = in.readLong();
 		if(arraylength != 0) {
-			System.out.println("array of length " + arraylength);
+			//System.out.println("array of length " + arraylength);
 		}
 		for(int i = 0; i < arraylength; i++) {
 			out.setArrayElement(i, readHelper());
@@ -67,7 +67,7 @@ public class Reader {
 
 		//if we have a type, check named members
 		for(String s : TypesDB.getMembers(typeindex)) {
-			System.out.println("now reading in " + s);
+			//System.out.println("now reading in " + s);
 			if(s.equals("__proto__")) { //TODO: for some reason can't serialize js inheritance chain
 				continue;
 			}

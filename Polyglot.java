@@ -12,11 +12,11 @@ class Polyglot {
         Context polyglot = Context.newBuilder(supportedLangs)
             .allowAllAccess(true)
             .build();
-        Value v1 = polyglot.eval(Source.newBuilder("js", new File("./arraydef.js")).build());
-        Value v2 = polyglot.eval(Source.newBuilder("js", new File("./classdef.js")).build());
+        Value v1 = polyglot.eval(Source.newBuilder("js", new File("./tests/arraydef.js")).build());
+        Value v2 = polyglot.eval(Source.newBuilder("js", new File("./tests/classdef.js")).build());
 				Value v3 = polyglot.asValue(new TestClass().mutate());
-        Value v4 = polyglot.eval(Source.newBuilder("js", new File("./complexclassdef.js")).build());
-        //Value v5 = polyglot.eval(Source.newBuilder("python", new File("./class.py")).build());
+        Value v4 = polyglot.eval(Source.newBuilder("js", new File("./tests/complexclassdef.js")).build());
+        //Value v5 = polyglot.eval(Source.newBuilder("python", new File("./tests/class.py")).build());
         //v5.getMember("mutate").execute();
         Value v6 = polyglot.asValue(ComplexClass.Init());
 
