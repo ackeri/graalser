@@ -14,11 +14,20 @@ public class Generator {
   
 	public static void main(String[] args) throws Exception {
     //src folder, package name, dest folder
-    Context polyglot = Context.create();
+    String[] supportedLangs = { "js", "python", "ruby" };
+    Context polyglot = Context.newBuilder(supportedLangs).allowAllAccess(true).build();
     polyglot.eval("js", "[1,2,42,4]");
-    Value v = polyglot.getBindings("java");
-    //System.out.println(v.getMember("Array").execute(3));
-    System.out.println(v);
+    Value v2 = polyglot.eval(Source.newBuilder("js", new File("./tests/classdef.js")).build());
+    //Value v3 = polyglot.eval(Source.newBuilder("python", new File("./tests/class.py")).build());
+    Value v4 = polyglot.eval(Source.newBuilder("ruby", new File("./tests/class.rb")).build());
+    //Value v = polyglot.getBindings("js");
+    //System.out.println(v.getMemberKeys());
+    //System.out.println(v.getMember("testjs").newInstance());
+    //Value v = polyglot.getBindings("python");
+    //Value test = v.getMember("Pythontest");
+    Value v = polyglot.getBindings("ruby");
+    System.out.println(v.getMember("class"));
+    System.out.println(v4);
   }
 
 	public Generator(Value prototype) {
