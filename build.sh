@@ -4,6 +4,6 @@ PATH=$GRAALVM_HOME/bin:$PATH
 
 echo "Building"
 #greps pull out GC link order errors 
-javac -cp "./*:." Polyglot.java | grep -v HotSpotJVMCIRuntime | grep -v createCompiler | grep -v "garbage collector is not" | grep -v "java:205"
+javac -cp "./*:." Generator.java -d classes | grep -v HotSpotJVMCIRuntime | grep -v createCompiler | grep -v "garbage collector is not" | grep -v "java:205"
 echo "Executing"
-java -cp "./*:." -XX:+UseSerialGC Polyglot
+java -cp "classes/*:classes/" -XX:+UseSerialGC Generator
